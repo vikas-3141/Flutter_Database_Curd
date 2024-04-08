@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'Api_Exicuter.dart';
 import 'Practice_Insert.dart';
-import 'UserUpdate.dart';
 import 'db/mydatabase.dart';
 
 class Practice_Api_List extends StatefulWidget {
@@ -72,7 +70,7 @@ class _Practice_Api_ListState extends State<Practice_Api_List> {
                   itemBuilder:(context, index) {
                     return ListTile(onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return UserUpdate(map: snapshot.data![index],);
+                        return Practice_Insert(map: snapshot.data![index],);
                       },)).then((value)
                       {
                         setState(() {

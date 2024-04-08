@@ -12,7 +12,7 @@ class Api_Create
 
   Future<void> delete(String id)
   async {
-      var de=await http.delete(Uri.parse("https://65de9e82dccfcd562f571b22.mockapi.io/Faculty_Api/$id"));
+      var get=await http.delete(Uri.parse("https://65de9e82dccfcd562f571b22.mockapi.io/Faculty_Api/$id"));
   }
 
   Future<Map> Insert(Map<dynamic,dynamic> map) async {
@@ -22,7 +22,7 @@ class Api_Create
   }
 
   Future<Map> Update(Map<dynamic,dynamic> map,String id) async {
-    var get = await http.post(Uri.parse("https://65de9e82dccfcd562f571b22.mockapi.io/Faculty_Api/$id"),headers: {"Content-Type":"application/json"},body: jsonEncode(map));
+    var get = await http.put(Uri.parse("https://65de9e82dccfcd562f571b22.mockapi.io/Faculty_Api/$id"),headers: {"Content-Type":"application/json"},body: jsonEncode(map));
     Map<dynamic,dynamic> de = jsonDecode(get.body);
     return de;
   }
