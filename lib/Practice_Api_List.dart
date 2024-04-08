@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'Api_Exicuter.dart';
 import 'Practice_Insert.dart';
+import 'UserUpdate.dart';
 import 'db/mydatabase.dart';
 
 class Practice_Api_List extends StatefulWidget {
@@ -22,12 +23,27 @@ class _Practice_Api_ListState extends State<Practice_Api_List> {
     addToDb();
   }
 
-  Future<void> addToDb() async {
-    var dbdata = await db.getUser();
-    var apidata = await api.getApi();
-    print("api : "+apidata.runtimeType.toString());
-    print("db : "+dbdata.runtimeType.toString());
+  addToDb() async {
+    var dbData = await db.getUser();
+    var apiData = await api.getApi();
+
+    for (var element in apiData) {
+      bool f = false;
+      for (var element1 in dbData) {
+        if (element['id'] == element1['id']) {
+          f = true;
+          break; // No need to continue if we found a match
+        }
+      }
+      if (!f) {
+        await db.insert(UserName: element['UserName']);
+      }
+    }
+    setState(() {
+      // Update UI if necessary
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,46 +60,53 @@ class _Practice_Api_ListState extends State<Practice_Api_List> {
             });
           }, icon: Icon(Icons.add))
         ],),
-        body:
-        FutureBuilder(future: db.getUser(), builder: (context, snapshot) {
+      body: Container(
+        child: FutureBuilder(future: db.copyPasteAssetFileToRoot(),builder: (context, snapshot) {
           if(snapshot.hasData)
           {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    onTap: () {
+            return FutureBuilder(future: db.getUser(), builder: (context, snapshot) {
+              if(snapshot.hasData)
+              {
+                return ListView.builder(
+                  itemCount: snapshot.data!.length,
+                  itemBuilder:(context, index) {
+                    return ListTile(onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return Practice_Insert(map: snapshot.data![index],);
-                      },)).then((value){
-                        setState(() {
-
-                        });
-                      });
-                    },
-                    title: Text(snapshot.data![index]['UserName']),
-                    trailing: IconButton(onPressed: () {
-                      db.getDelete(snapshot.data![index]['id']).then((value)
+                        return UserUpdate(map: snapshot.data![index],);
+                      },)).then((value)
                       {
                         setState(() {
 
                         });
                       });
-                    }, icon: Icon(Icons.delete)),
-                  ),);
-              },);
-          }
-          else if (snapshot.hasError)
-          {
-            return Text(snapshot.error.toString());
+                    },
+                      title: Text(snapshot.data![index]['UserName']),
+                      trailing: IconButton(onPressed: () {
+                        db.getDelete(snapshot.data![index]['id']).then((value)
+                        {
+                          setState(() {
+
+                          });
+                        });
+                      }, icon: Icon(Icons.delete)),);
+                  },);
+              }
+              else if (snapshot.hasError)
+              {
+                return Text(snapshot.error.toString());
+              }
+              else
+              {
+                return CircularProgressIndicator();
+              }
+            });
           }
           else
           {
-            return CircularProgressIndicator();
+            return Text('vikas');
           }
-        }
-          ,)
+        },),
+      ),
     );
   }
 }
