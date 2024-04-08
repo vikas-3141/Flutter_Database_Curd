@@ -9,18 +9,18 @@ class mydatabase
     Future<Database> initDatabase()
     async {
         Directory appDocdir= await getApplicationDocumentsDirectory();
-        String databasePath= join(appDocdir.path,'database.db');
+        String databasePath= join(appDocdir.path,'database1.db');
         return await openDatabase(databasePath);
     }
 
     Future<bool>copyPasteAssetFileToRoot()
     async {
         Directory documentDirectory=await getApplicationDocumentsDirectory();
-        String path= join(documentDirectory.path,'database.db');
+        String path= join(documentDirectory.path,'database1.db');
 
         if(FileSystemEntity.typeSync(path)==FileSystemEntityType.notFound)
         {
-            ByteData data=await rootBundle.load( join('assets/database','database.db'));
+            ByteData data=await rootBundle.load( join('assets/database','database1.db'));
             List<int> bytes=data.buffer.asUint8List(data.offsetInBytes,data.lengthInBytes);
             await File(path).writeAsBytes(bytes);
             return true;

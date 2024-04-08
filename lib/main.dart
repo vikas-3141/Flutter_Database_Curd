@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:train/Api_UserList.dart';
-import 'package:train/Practice_User.dart';
-import 'package:train/UserList.dart';
-import 'package:train/home.dart';
-
 import 'Practice_Api_List.dart';
 
 void main() {
@@ -22,7 +17,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Api_UserList(),
+      home: Practice_Api_List(),
       debugShowCheckedModeBanner: false,
     );
   }
